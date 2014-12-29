@@ -23,7 +23,6 @@ module Chess
 
 	def self.add_starting_pawn(pos)
 		@@starting_pawns<<pos
-		
 	end
 	def self.remove_starting_pawn(pos)
 		@@starting_pawns.delete(pos)
