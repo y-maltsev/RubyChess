@@ -8,7 +8,7 @@ module Chess
 	def init_game_type
 	  choise = 0
 	  until (1..3) === choise do
-	    puts "Chose Chess rules: 1. Standart 2. timed 3. ???"
+	    puts "Chose Chess rules: 1. Standart 2. Timed 3. ???"
 		choise = gets.strip.to_i
 	  end
 	  @rule_type = choise
@@ -44,6 +44,10 @@ module Chess
 	
 	end
 	
+	def move_piece(source, dest)
+	  
+	end
+	
 	def reset_board(type)
 	  File.open('BoardSave2.txt', 'w') do |f1|
 	    f1.puts "#{@rule_type}"
@@ -70,7 +74,9 @@ module Chess
     end
 
     def run
-	  
+	  while true
+	    
+	  end
     end
 	
  
