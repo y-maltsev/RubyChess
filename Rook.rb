@@ -13,7 +13,6 @@ module Chess
 	   moves = []
 	   (1..count).each do |i|
 	     x, y = source[0]+dir[0]*i , source[1]+dir[1]*i
-		 puts "x=#{x} y=#{y} count=#{count} i=#{i}"
 	     moves << [x,y] if(board[[x,y]] == nil || board[[x,y]][0] != color)
 		 break if(board[[x,y]] != nil)
 	   end
