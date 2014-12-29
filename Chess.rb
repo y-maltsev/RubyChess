@@ -1,3 +1,5 @@
+require "./Pawn.rb"
+
 module Chess
   class Board
   private
@@ -32,7 +34,8 @@ module Chess
 		  reset_board(@rule_type) if choise == "n"
 		end
 	    (1..8).each do |y|
-	      f1.gets.split.each_with_index{ |piece, x | @board[[x+1,y]] = (piece == "n")? nil:parse_piece(piece)}		  
+	      f1.gets.split.each_with_index{ |piece, x | @board[[x+1,y]] = (piece == "n")? nil:piece}
+		  board.each{| k,v| Pawn.add_starting_pawn(k) if v!= nil && v[1]=="P"}
 	    end
 	  end
 	end
@@ -43,12 +46,18 @@ module Chess
 	
 	def reset_board(type)
 	  File.open('BoardSave2.txt', 'w') do |f1|
-	    f1.puts type
+	    f1.puts "#{@rule_type}"
+		if((1..2) === @rule_type) 
+		  f1.puts "Br  Bk  Bb  BQ  BK  Bb  Bk  Br" 
+		  f1.puts "BP  BP  BP  BP  BP  BP  BP  BP"
+		  f1.puts "n   n   n   n   n   n   n   n "
+		  f1.puts "n   n   n   n   n   n   n   n "
+		  f1.puts "n   n   n   n   n   n   n   n "
+		  f1.puts "n   n   n   n   n   n   n   n "		
+		  f1.puts "WP  WP  WP  WP  WP  WP  WP  WP" 
+		  f1.puts "Wr  Wk  WB  WQ  WK  WB  Wk  Wr"
+		end
 	  end
-	end
-	
-	def parse_piece(name)
-	  
 	end
 	
 	
@@ -69,3 +78,4 @@ module Chess
 end
 
 chess = Chess::Board.new
+
