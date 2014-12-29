@@ -32,7 +32,7 @@ module Chess
 		  reset_board(@rule_type) if choise == "n"
 		end
 	    (1..8).each do |y|
-	      f1.gets.split.each_with_index{ |piece, x | @board[[x+1,y]] = (piece == "n")? nil:piece}		  
+	      f1.gets.split.each_with_index{ |piece, x | @board[[x+1,y]] = (piece == "n")? nil:parse_piece(piece)}		  
 	    end
 	  end
 	end
@@ -40,11 +40,17 @@ module Chess
 	def init_2D
 	
 	end
+	
 	def reset_board(type)
 	  File.open('BoardSave2.txt', 'w') do |f1|
 	    f1.puts type
 	  end
 	end
+	
+	def parse_piece(name)
+	  
+	end
+	
 	
   public
     def initialize
