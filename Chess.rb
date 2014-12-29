@@ -18,10 +18,18 @@ module Chess
 	  @render_type = choise
 	end
 	
+	def init_board
+	  File.open('BoardSave.txt', 'r') do |f1|  
+	    (1..8).each do |y|
+	      f1.gets.split.each_with_index{ |piece, x | @board[[x+1,y]] = (piece == "n")? nil:piece}		  
+	    end
+	  end
+	end
   public
     def initialize
-      board = Hash.new(nil)
+      @board = Hash.new(nil)
 	  init_game_type
+	  init_board
     end
 
     def run
