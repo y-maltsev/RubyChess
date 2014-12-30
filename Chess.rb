@@ -3,7 +3,7 @@ require "./Pawn.rb"
 module Chess
   class Board
   private
-    attr_accessor :board, :rule_type, :render_type
+    attr_accessor :board, :rule_type, :render_type, :selected , :selector
 	
 	def init_game_type
 	  choise = 0
@@ -63,19 +63,33 @@ module Chess
 		end
 	  end
 	end
-	
+	def render_player_controls
+	  puts "//----------------------------------------------------------"
+	  puts "// to select piece/position input its coordinates, example:"
+	  puts "// User input: a2"
+	  puts "//To reset the game - User input: reset"
+	  puts "//To quit the game - User input: quit"
+	  puts "//----------------------------------------------------------"
+	end
 	def render_board
 	  system('cls')
-	  puts board.values.map{ |x| x == nil ? x="   " : x.center(3) }
-       .join(" | ")
-       .insert(0, " ").scan(/.{1,48}/).join("\n|")
-       .insert(0, "|")
-       .insert(-1, " |")
+	  render_player_controls
+	  puts "  a  b  c  d  e  f  g  h"
+	  puts board.values.map{ |x| x == nil ? x="  " : x }
+       .join("|").scan(/.{1,24}/).join("\n|")
+       .insert(0, "|").insert(-1, "|")
+	   .split("\n").each_with_index.map{ |x,i| x = (i+1).to_s+x+(i+1).to_s}.join("\n")
+	  puts "  a  b  c  d  e  f  g  h"
+	  puts "Selected piece:#{selected == nil ? "none" : board[selected] }"
+	  puts "possible move positions:"
 	end
 	
 	def handle_user_input
 	  if(render_type == 1)
 	    render_board
+		print "User input: "
+		gets
+		
 	  end
 	  true
 	end
@@ -86,6 +100,7 @@ module Chess
 	  init_game_type
 	  init_board
 	  init_2D if @render_type == 2
+	  selected = nil
     end
 
     def run
