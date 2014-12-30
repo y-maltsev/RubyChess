@@ -11,7 +11,7 @@ module Chess
 	    moves<< helper 
 	    if @@starting_pawns.include?(source)
           helper2 = [source[0], source[1]+dir*2]
-		  moves<< helper2 if(board[helper] == nil  && (1..8)===helper[1]) # in case of games like Upside-down chess a check must be made
+		  moves<< helper2 if(board[helper2] == nil  && (1..8)===helper2[1]) # in case of games like Upside-down chess a check must be made
 	    end
 	  end
 	  helper = [source[0]+1,source[1]+dir]
