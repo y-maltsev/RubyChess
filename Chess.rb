@@ -136,9 +136,9 @@ module Chess
 		  modify_pawn(selector) if(board[selector][1]== "P" || "p") 
 		  @selected = nil
           @possible_moves = []
-		  turnColor= turnColor == "W"? "B": "W"
-		  if(chess_check( turnColor, "K") && chessmate_check) 
-		
+		  @turnColor= @turnColor == "W" ? "B": "W"
+		  if(chess_check( turnColor, "K") && chessmate_check(turnColor, "K", selector)) 
+		    init_board
 		  end
 		end
       else
@@ -155,7 +155,7 @@ module Chess
 	  end
 	end
 	
-	def chess_check(color, piece_type) #piece type = which piece to be checked with selected color for chess
+	def chess_check(color, piece_type) #piece type = which piece to be checked with selected color for chess, normaly "K" = king
 	  piece = color+piece_type
 	  pos =  board.select{ | k,v| v==piece}.keys[0]
 	  result = is_pos_attacked_by_color( color == "W"? "B": "W", pos)
@@ -163,11 +163,32 @@ module Chess
 	
 	def is_pos_attacked_by_color(enemy_color, pos)
       result = false
-	  puts pos.inspect
 	  board.select{ |k,v| v!=nil}.select{ |k,v| v[0]==enemy_color}.keys.each{ |x| result =  result || (get_piece_moves(x, enemy_color).include? pos)}
-	 
 	  result
 	end
+	
+	def chessmate_check(color, piece_type, attacker_pos)
+	  piece = color+piece_type
+	  piece_pos =  board.select{ | k,v| v==piece}.keys[0]
+	  get_piece_moves(piece_pos, color).each do |x|
+	    temp = board[x]
+	    board[x] = piece
+		board[piece_pos] = nil
+		return false unless is_pos_attacked_by_color( color == "W"? "B": "W", x)
+		board[x] = temp
+		board[piece_pos] = piece
+	  end
+	  return false  if( board[attacker_pos][1] == "k" && is_pos_attacked_by_color(color, attacker_pos))
+	  result = true
+	   board[piece_pos] = nil
+	   (get_piece_moves(attacker_pos, color == "W"? "B": "W").select{ |x|  ([piece_pos[1] ,attacker_pos[1]].min..[piece_pos[1], attacker_pos[1]].max)===x[1] &&
+																	      ([piece_pos[0] ,attacker_pos[0]].min..[piece_pos[0], attacker_pos[0]].max)===x[0] &&
+																		  x!=piece_pos
+																		  } + [attacker_pos])
+	   .each{ |x| puts "pos==#{x.inspect}"; result = false if is_pos_attacked_by_color(color,x)}
+	  result
+	end
+	
   public
     def initialize
       @board = Hash.new(nil)
