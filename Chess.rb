@@ -24,14 +24,14 @@ module Chess
 	def init_board
 	  File.open('BoardSave.txt', 'r') do |f1| 
 		if f1.gets.split[0].to_i !=@rule_type 
-		  reset_board(@rule_type) 
+		  reset_board
 		else
 		  choise = "a"
 		  until choise == "y" || choise == "n" do
-		  	puts "Load last game?(y/n):"
+		  	print "Load last game?(y/n):"
 		    choise = gets.strip
 		  end
-		  reset_board(@rule_type) if choise == "n"
+		  reset_board if choise == "n"
 		end
 	    (1..8).each do |y|
 	      f1.gets.split.each_with_index{ |piece, x | @board[[x+1,y]] = (piece == "n")? nil:piece}
@@ -48,7 +48,7 @@ module Chess
 	  
 	end
 	
-	def reset_board(type)
+	def reset_board
 	  File.open('BoardSave2.txt', 'w') do |f1|
 	    f1.puts "#{@rule_type}"
 		if((1..2) === @rule_type) 
@@ -87,13 +87,26 @@ module Chess
 	def handle_user_input
 	  if(render_type == 1)
 	    render_board
-		print "User input: "
-		gets
-		
+		print "User Input: "
+		input = gets
+		until input=="reset\n" || input=="exit\n" || (input.length-1==2 && (1..8) === input[0].ord-96 && (1..8) === input[1].to_i) do
+          print "Invalid input, please reenter input: "
+		  input = gets
+		end
+		case input
+			when "reset\n" then init_board
+			when "exit\n" then return false
+			else
+			selector = [input[0].ord-96,input[1].to_i]
+			handle_event
+		end
 	  end
 	  true
 	end
 	
+	def handle_event(x,y)
+	
+	end
   public
     def initialize
       @board = Hash.new(nil)
