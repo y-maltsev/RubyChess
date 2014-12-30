@@ -64,6 +64,21 @@ module Chess
 	  end
 	end
 	
+	def render_board
+	  system('cls')
+	  puts board.values.map{ |x| x == nil ? x="   " : x.center(3) }
+       .join(" | ")
+       .insert(0, " ").scan(/.{1,48}/).join("\n|")
+       .insert(0, "|")
+       .insert(-1, " |")
+	end
+	
+	def handle_user_input
+	  if(render_type == 1)
+	    render_board
+	  end
+	  true
+	end
 	
   public
     def initialize
@@ -74,8 +89,10 @@ module Chess
     end
 
     def run
-	  while true
-	    
+	  while true do
+	    unless handle_user_input 
+		  break 
+		end
 	  end
     end
 	
@@ -84,4 +101,4 @@ module Chess
 end
 
 chess = Chess::Board.new
-
+chess.run
