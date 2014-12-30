@@ -1,9 +1,11 @@
 require "./Pawn.rb"
-
+require "./Queen.rb"
+require "./King.rb"
+require "./Knight.rb"
 module Chess
   class Board
   private
-    attr_accessor :board, :rule_type, :render_type, :selected , :selector
+    attr_accessor :board, :rule_type, :render_type, :selected , :selector, :possible_moves, :turnColor
 	
 	def init_game_type
 	  choise = 0
@@ -12,12 +14,15 @@ module Chess
 		choise = gets.strip.to_i
 	  end
 	  @rule_type = choise
+	  
 	  choise = 0
 	  until (1..2) === choise do
 	    puts "Chose Chess Render type: 1. Command Line 2. 2D"
 		choise = gets.strip.to_i
 	  end
 	  @render_type = choise
+	  
+	  @turnColor = "W"
 	end
 	
 	
@@ -42,10 +47,6 @@ module Chess
 	
 	def init_2D
 	
-	end
-	
-	def move_piece(source, dest)
-	  
 	end
 	
 	def reset_board
@@ -80,8 +81,9 @@ module Chess
        .insert(0, "|").insert(-1, "|")
 	   .split("\n").each_with_index.map{ |x,i| x = (i+1).to_s+x+(i+1).to_s}.join("\n")
 	  puts "  a  b  c  d  e  f  g  h"
-	  puts "Selected piece:#{selected == nil ? "none" : board[selected] }"
-	  puts "possible move positions:"
+	  puts "Turn: #{ turnColor == "W"? "white" : "black"}"
+	  puts "Selected piece:#{@selected == nil ? "none" : "[#{(selected[0]+96).chr}, #{selected[1]}]"}"
+	  puts "possible move positions:#{@possible_moves == nil ? "none" : @possible_moves.collect{|x| [(x[0]+96).chr,x[1]] }}"
 	end
 	
 	def handle_user_input
@@ -97,15 +99,37 @@ module Chess
 			when "reset\n" then init_board
 			when "exit\n" then return false
 			else
-			selector = [input[0].ord-96,input[1].to_i]
+			@selector = [input[0].ord-96,input[1].to_i]
 			handle_event
 		end
 	  end
 	  true
 	end
 	
-	def handle_event(x,y)
+	def get_piece_moves(position)
+	 
+	  moves = []
+	  case board[position][1]
+	    when "p" then moves = Pawn.get_move_positions(position, turnColor, board)
+		when "P" then moves = Pawn.get_move_positions(position, turnColor, board)
+        when "r" then moves = Rook.get_move_positions(position, turnColor, board)
+        when "k" then moves = Knight.get_move_positions(position, turnColor, board)	
+        when "b" then moves = Bishop.get_move_positions(position, turnColor, board)	
+        when "K" then moves = King.get_move_positions(position, turnColor, board)	
+        when "Q" then moves = Queen.get_move_positions(position, turnColor, board)	
+	  end
+	  moves
+	end
+	 
 	
+	def handle_event
+	  if(board[selector][0]==@turnColor)
+	    @selected = selector
+		@possible_moves = get_piece_moves(selector)
+	  else 
+	    @selected = nil
+		@possible_moves = nil
+	  end
 	end
   public
     def initialize
@@ -114,6 +138,7 @@ module Chess
 	  init_board
 	  init_2D if @render_type == 2
 	  selected = nil
+	  possible_moves = nil
     end
 
     def run
