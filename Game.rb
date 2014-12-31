@@ -124,6 +124,7 @@ module Chess
 	end
 	def button_down(id)
       if id == Gosu::KbEscape
+	    @board.save_board
         close
     end
   end
@@ -197,6 +198,7 @@ module Chess
 		  break
 		end
 	  end
+	  @board.save_board
 	end
 	
   end

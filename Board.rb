@@ -31,18 +31,19 @@ module Chess
           f1.gets.split.each_with_index{ |piece, x | @board[[x+1,y]] = (piece == "n")? nil:piece}
           board.each{| k,v| Pawn.add_starting_pawn(k) if v!= nil && v[1]=="P"}
         end
+		if(rule_type == 3 ) 
+	    @last_time=Time.now 
+	    @turn_time_playerW = f1.gets.split[0].to_i
+	    @turn_time_playerB = f1.gets.split[0].to_i
+	  end
       end
 	  
 	  
 	  if(rule_type == 2 ) 
 	    @last_time=Time.now 
-	    @turn_time = 10  
+	    @turn_time = 30  
 	  end
-	  if(rule_type == 3 ) 
-	    @last_time=Time.now 
-	    @turn_time_playerW = 300
-	    @turn_time_playerB = 300
-	  end
+	  
 	end
 	
     def reset_board
@@ -59,16 +60,14 @@ module Chess
           f1.puts "WP  WP  WP  WP  WP  WP  WP  WP" 
           f1.puts "Wr  Wk  Wb  WQ  WK  Wb  Wk  Wr"
         end
+		if(@rule_type == 3)
+		 f1.puts "300"
+		 f1.puts "300"
+		end
       end
     end
 	
-	def save_board
-	   File.open('BoardSave.txt', 'w') do |f1|
-        f1.puts "#{@rule_type}"
-		f1.puts "#{@turnColor}"
-		f1.puts board.values.map{ |x| x == nil ? x="n  " : x.center(3)}.join("").scan(/.{1,24}/).join("\n")
-      end
-	end
+	
 	
     def get_piece_moves(position, color)
       moves = []
@@ -215,7 +214,15 @@ module Chess
     #    end
     #  end
     #end
-    
+    def save_board
+	   File.open('BoardSave.txt', 'w') do |f1|
+        f1.puts "#{@rule_type}"
+		f1.puts "#{@turnColor}"
+		f1.puts board.values.map{ |x| x == nil ? x="n  " : x.center(3)}.join("").scan(/.{1,24}/).join("\n")
+		f1.puts "#{turn_time_playerW}\n#{turn_time_playerB}" if @rule_type == 3
+      end
+	  
+	end
  
   end
 end
