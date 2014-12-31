@@ -5,7 +5,7 @@ require "./Knight.rb"
 module Chess
   class Board
   
-  attr_accessor :board, :rule_type, :render_type, :selected , :possible_moves, :turnColor, :winner, :last_time, :turn_time, :turn_time_playerW, :turn_time_playerB
+  attr_accessor :board, :rule_type, :selected , :possible_moves, :turnColor, :winner, :last_time, :turn_time, :turn_time_playerW, :turn_time_playerB
   private
     def init_board
       File.open('BoardSave.txt', 'r') do |f1| 
@@ -20,11 +20,10 @@ module Chess
           reset_board if choise == "n"
         end
       end
-	  
-	  load_boad
+	  load_board
     end
     
-	def load_boad
+	def load_board
 	  File.open('BoardSave.txt', 'r') do |f1| 
         f1.gets
         @turnColor = f1.gets.split[0]
@@ -170,7 +169,7 @@ module Chess
 	
 	def reset
 	  reset_board
-	  load_boad
+	  load_board
 	end
 	
 	def handle_event(selector)

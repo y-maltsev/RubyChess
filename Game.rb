@@ -1,4 +1,7 @@
 require "./Board.rb"
+require 'rubygems'
+require 'gosu'
+
 module Chess
   class Game
     
@@ -35,11 +38,34 @@ module Chess
 	
   end
   
-  class Renderer2D
+  class Renderer2D < Gosu::Window
     
 	def initialize(type)
 	  @board = Board.new(type)
+	  super 640, 480, false
+      self.caption = 'Chess'
+	  @board = Gosu::Image.new(self, "Media/Board.bmp", true)
+	  @Br = Gosu::Image.new(self, "Media/Black_Rook.bmp", true)
+	  @Bk = Gosu::Image.new(self, "Media/Black_Knight.bmp", true)
+	  @Bb = Gosu::Image.new(self, "Media/Black_Bishop.bmp", true)
+	  @BK = Gosu::Image.new(self, "Media/Black_King.bmp", true)
+	  @BQ = Gosu::Image.new(self, "Media/Black_Queen.bmp", true)
+	  @Bp = Gosu::Image.new(self, "Media/Black_Pawn.bmp", true)
+	  @Wr = Gosu::Image.new(self, "Media/White_Rook.bmp", true)
+	  @Wk = Gosu::Image.new(self, "Media/White_Knight.bmp", true)
+	  @Wb = Gosu::Image.new(self, "Media/White_Bishop.bmp", true)
+	  @WK = Gosu::Image.new(self, "Media/White_King.bmp", true)
+	  @WQ = Gosu::Image.new(self, "Media/White_Queen.bmp", true)
+	  @Wp = Gosu::Image.new(self, "Media/White_Pawn.bmp", true)
+	  @x_offset = 140
+	  @y_offset = 60
 	end
+	def draw
+      a = i%8
+      @board.draw(@x_offset, @y_offset, 0)
+	  @Br.draw(@x_offset+45*a, @y_offset,0, 1, 1,  0xffffffff)
+    end
+	
   end
   
   class RendererCL    
