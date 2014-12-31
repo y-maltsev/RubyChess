@@ -44,27 +44,78 @@ module Chess
 	  @board = Board.new(type)
 	  super 640, 480, false
       self.caption = 'Chess'
-	  @board = Gosu::Image.new(self, "Media/Board.bmp", true)
-	  @Br = Gosu::Image.new(self, "Media/Black_Rook.bmp", true)
-	  @Bk = Gosu::Image.new(self, "Media/Black_Knight.bmp", true)
-	  @Bb = Gosu::Image.new(self, "Media/Black_Bishop.bmp", true)
-	  @BK = Gosu::Image.new(self, "Media/Black_King.bmp", true)
-	  @BQ = Gosu::Image.new(self, "Media/Black_Queen.bmp", true)
-	  @Bp = Gosu::Image.new(self, "Media/Black_Pawn.bmp", true)
-	  @Wr = Gosu::Image.new(self, "Media/White_Rook.bmp", true)
-	  @Wk = Gosu::Image.new(self, "Media/White_Knight.bmp", true)
-	  @Wb = Gosu::Image.new(self, "Media/White_Bishop.bmp", true)
-	  @WK = Gosu::Image.new(self, "Media/White_King.bmp", true)
-	  @WQ = Gosu::Image.new(self, "Media/White_Queen.bmp", true)
-	  @Wp = Gosu::Image.new(self, "Media/White_Pawn.bmp", true)
+	  @models = Hash.new(nil)
+	  @models["board"] = Gosu::Image.new(self, "Media/Board.bmp", true)
+	  @models["selector"] = Gosu::Image.new(self, "Media/Selector.bmp", true)
+	  @models["moves"] = Gosu::Image.new(self, "Media/Moves.bmp", true)
+	  @models["Br"] = Gosu::Image.new(self, "Media/Black_Rook.bmp", true)
+	  @models["Bk"] = Gosu::Image.new(self, "Media/Black_Knight.bmp", true)
+	  @models["Bb"] = Gosu::Image.new(self, "Media/Black_Bishop.bmp", true)
+	  @models["BK"] = Gosu::Image.new(self, "Media/Black_King.bmp", true)
+	  @models["BQ"] = Gosu::Image.new(self, "Media/Black_Queen.bmp", true)
+	  @models["BP"] = Gosu::Image.new(self, "Media/Black_Pawn.bmp", true)
+	  @models["Bp"] = Gosu::Image.new(self, "Media/Black_Pawn.bmp", true)
+	  @models["Wr"] = Gosu::Image.new(self, "Media/White_Rook.bmp", true)
+	  @models["Wk"] = Gosu::Image.new(self, "Media/White_Knight.bmp", true)
+	  @models["Wb"] = Gosu::Image.new(self, "Media/White_Bishop.bmp", true)
+	  @models["WK"] = Gosu::Image.new(self, "Media/White_King.bmp", true)
+	  @models["WQ"] = Gosu::Image.new(self, "Media/White_Queen.bmp", true)
+	  @models["Wp"] = Gosu::Image.new(self, "Media/White_Pawn.bmp", true)
+	  @models["WP"] = Gosu::Image.new(self, "Media/White_Pawn.bmp", true)
 	  @x_offset = 140
 	  @y_offset = 60
+	  @selector = [1,1]
+	  @x=10
+	  @y=10
 	end
+	
+	def update
+	  puts  "selected before = #{@board.selected.inspect}"
+	  if button_down? Gosu::KbLeft or button_down? Gosu::GpLeft then
+        @x = @x-1
+      end
+	  if button_down? Gosu::KbRight or button_down? Gosu::GpRight then
+        @x = @x+1
+      end
+      if button_down? Gosu::KbUp or button_down? Gosu::GpButton0 then
+        @y = @y-1
+      end
+      if button_down? Gosu::KbDown or button_down? Gosu::GpButton0 then
+        @y = @y+1
+      end
+	  if button_down? Gosu::KbSpace then
+        @board.reset
+      end
+	  if button_down? Gosu::KbReturn then
+	   # puts "selector_before = #{@selector.inspect} selected before = #{@board.selected.inspect}"
+        @board.handle_event([@selector[0],@selector[1]])
+      end
+	  @x=10 if @x<10
+	  @x=80 if @x>80
+	  @y=10 if @y<10
+	  @y=80 if @y>80
+	  @selector[0]=@x/10
+	  @selector[1]=@y/10
+	end
+	
 	def draw
-      a = i%8
-      @board.draw(@x_offset, @y_offset, 0)
-	  @Br.draw(@x_offset+45*a, @y_offset,0, 1, 1,  0xffffffff)
+      @models["board"].draw(@x_offset, @y_offset, 0)
+	  @board.possible_moves.each{ |x| @models["moves"].draw(@x_offset+45*(x[0]-1), @y_offset+45*(x[1]-1),0)} if @board.possible_moves != nil
+	  @models["selector"].draw(@x_offset+45*(@selector[0]-1), @y_offset+45*(@selector[1]-1),0)
+	  (1..8).each do |y|
+	    (1..8).each do |x|
+		  @models[@board.board[[x,y]]].draw(@x_offset+45*(x-1), @y_offset+45*(y-1),0) if @board.board[[x,y]] != nil
+		end
+	  end
+	 
+	  
     end
+	
+	def button_down(id)
+      if id == Gosu::KbEscape
+        close
+    end
+  end
 	
   end
   
@@ -126,7 +177,6 @@ module Chess
           else
             @board.handle_event([input[0].ord-96,input[1].to_i])
         end
-      
       true
     end
 	

@@ -57,7 +57,7 @@ module Chess
           f1.puts "n   n   n   n   n   n   n   n "
           f1.puts "n   n   n   n   n   n   n   n "        
           f1.puts "WP  WP  WP  WP  WP  WP  WP  WP" 
-          f1.puts "Wr  Wk  WB  WQ  WK  WB  Wk  Wr"
+          f1.puts "Wr  Wk  Wb  WQ  WK  Wb  Wk  Wr"
         end
       end
     end
@@ -88,6 +88,7 @@ module Chess
     
 	
 	def modify_pawn(pos)
+	 puts "ok"
 	  if(turnColor == "W" && pos[1] ==1) ||  (turnColor == "B" && pos[1] ==8) 
 	    board[pos][1] = "Q"
 	  elsif board[pos][1] == "P"
@@ -173,25 +174,31 @@ module Chess
 	end
 	
 	def handle_event(selector)
+	   puts "selector_after = #{selector.inspect} selected after = #{selected.inspect}"
 	  unless @rule_type == 2 && @turn_time <0 
         if(@board[selector] !=nil && board[selector][0]==@turnColor)
           @selected = selector
           @possible_moves = get_piece_moves(selector, turnColor)
         elsif @selected !=nil &&  (@possible_moves.include? selector)
 	      temp = board[selector]
+		  #puts " = #{board.inspect}"
           board[selector] = board[@selected]
           board[@selected] = nil
 		  if ( chess_check( turnColor, "K"))
 		    board[@selected] = board[selector]
 		    board[selector] = temp
 		  else
-		    modify_pawn(selector) if(board[selector][1]== "P" || "p") 
+		    puts "ok"
+		    modify_pawn(selector) if(board[selector][1]== "P" || board[selector][1] == "p")	
+			puts "ok"
 		    @selected = nil
             @possible_moves = []
 		    @turnColor= @turnColor == "W" ? "B": "W"
+			
 		    if(chess_check( turnColor, "K") && chessmate_check(turnColor, "K", selector)) 
 		      @winner = @turnColor == "W" ? "B": "W"
 		    end
+			
 		  end
         else
           @selected = nil
