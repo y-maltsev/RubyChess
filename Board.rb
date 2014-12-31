@@ -48,8 +48,8 @@ module Chess
 		
 		if(rule_type == 3 ) 
 		  @last_time=Time.now 
-		  @turn_time_playerW = 30
-		  @turn_time_playerB = 30
+		  @turn_time_playerW = 300
+		  @turn_time_playerB = 300
 		end
       end
     end
