@@ -33,9 +33,6 @@ module Chess
 	def run
 	  @Renderer.show
 	end
-	
-	
-	
   end
   
   class Renderer2D < Gosu::Window
@@ -62,6 +59,7 @@ module Chess
 	  @models["WQ"] = Gosu::Image.new(self, "Media/White_Queen.bmp", true)
 	  @models["Wp"] = Gosu::Image.new(self, "Media/White_Pawn.bmp", true)
 	  @models["WP"] = Gosu::Image.new(self, "Media/White_Pawn.bmp", true)
+	  @font = Gosu::Font.new(self, Gosu::default_font_name, 20)
 	  @x_offset = 140
 	  @y_offset = 60
 	  @selector = [1,1]
@@ -96,6 +94,7 @@ module Chess
 	  @y=80 if @y>80
 	  @selector[0]=@x/10
 	  @selector[1]=@y/10
+	  @board.update
 	end
 	
 	def draw
@@ -107,10 +106,22 @@ module Chess
 		  @models[@board.board[[x,y]]].draw(@x_offset+45*(x-1), @y_offset+45*(y-1),0) if @board.board[[x,y]] != nil
 		end
 	  end
-	 
-	  
+	  draw_time  if (@board.rule_type == 2 || @board.rule_type == 3)
     end
 	
+	def draw_time
+	  @font.draw("Time left: #{ 
+	  if @board.rule_type == 2
+	    @board.turn_time.to_i.to_s 
+	  else 
+	    if @board.turnColor == "W"
+	       @board.turn_time_playerW.to_i.to_s
+	    else
+	       @board.turn_time_playerB.to_i.to_s
+	    end
+	  end
+	  }", 10, 10, 1, 1.0, 1.0, 0xffffff00)
+	end
 	def button_down(id)
       if id == Gosu::KbEscape
         close

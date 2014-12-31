@@ -1,10 +1,10 @@
-1
+3
 W
-Br  Bk  Bb  BQ  BK  Bb  Bk  Br
-BP  BP  BP  BP  BP  BP  BP  BP
-n   n   n   n   n   n   n   n 
-n   n   n   n   n   n   n   n 
-n   n   n   n   n   n   n   n 
-n   n   n   n   n   n   n   n 
-WP  WP  WP  WP  WP  WP  WP  WP
-Wr  Wk  Wb  WQ  WK  Wb  Wk  Wr
+Br Bk Bb BQ BK Bb Bk Br 
+n  BP BP BP BP BP BP BP 
+n  n  n  n  n  n  n  n  
+Bp n  n  n  n  n  n  n  
+Wp n  n  n  n  n  n  n  
+n  n  n  n  n  n  n  n  
+n  WP WP WP WP WP WP WP 
+Wr Wk Wb WQ WK Wb Wk Wr 
