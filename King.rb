@@ -5,7 +5,7 @@ module Chess
 	  (0..2).each do |q|
 	    (0..2).each do |p|
 		  x, y = source[0]-1+p, source[1]-1+q
-	      moves << [x,y] if(board[[x,y]] == nil || board[[x,y]][0] != color)
+	      moves << [x,y] if((board[[x,y]] == nil || board[[x,y]][0] != color) && (1..8)===x && (1..8)===y)
 		 end
 	  end
 	  moves
@@ -13,7 +13,3 @@ module Chess
   end
 end
 
-
-board = Hash.new(nil)
-board[[2,7]] = "WK"
-Chess::King.get_move_positions([2,7],"W",board)
