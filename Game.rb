@@ -16,8 +16,8 @@ module Chess
 	
 	def init_game_type
       choise = 0
-      until (1..3) === choise do
-        puts "Chose Chess rules: 1. Standart 2. Timed rounds 3. Timed match"
+      until (1..4) === choise do
+        puts "Chose Chess rules: 1. Standart 2. Timed rounds 3. Timed match 4. Knight"
         choise = gets.strip.to_i
       end
       @rule_type = choise
@@ -68,7 +68,7 @@ module Chess
 	end
 	
 	def update
-	  puts  "selected before = #{@board.selected.inspect}"
+
 	  if button_down? Gosu::KbLeft or button_down? Gosu::GpLeft then
         @x = @x-1
       end
@@ -85,7 +85,6 @@ module Chess
         @board.reset
       end
 	  if button_down? Gosu::KbReturn then
-	   # puts "selector_before = #{@selector.inspect} selected before = #{@board.selected.inspect}"
         @board.handle_event([@selector[0],@selector[1]])
       end
 	  @x=10 if @x<10
@@ -106,8 +105,13 @@ module Chess
 		  @models[@board.board[[x,y]]].draw(@x_offset+45*(x-1), @y_offset+45*(y-1),0) if @board.board[[x,y]] != nil
 		end
 	  end
+	  draw_winner if(@board.winner !=nil)
 	  draw_time  if (@board.rule_type == 2 || @board.rule_type == 3)
     end
+	
+	def draw_winner
+	  @font.draw("Winner is: #{ @board.winner == "W" ? "White" : "Black" }", 10, 100, 1, 1.0, 1.0, 0xffffff00)
+	end
 	
 	def draw_time
 	  @font.draw("Time left: #{ 
@@ -128,10 +132,11 @@ module Chess
         close
     end
   end
-	
+
   end
-  
-  class RendererCL    
+
+  class RendererCL
+
 	def initialize(type)
 	  @board = Board.new(type)
 	end
@@ -144,11 +149,11 @@ module Chess
       puts "//To exit the game - User input: exit"
       puts "//----------------------------------------------------------"
     end
-	
-	def render_time  
+
+	def render_time
       print "Time left = "
 	  if @board.rule_type == 2
-	    puts @board.turn_time.to_s 
+	    puts @board.turn_time.to_s
 	  else 
 	    if @board.turnColor == "W"
 	      puts @board.turn_time_playerW.to_s
@@ -194,7 +199,7 @@ module Chess
 	
 	def show
 	  while true do
-        unless handle_user_input 
+        unless handle_user_input
 		  break
 		end
 	  end
@@ -204,5 +209,5 @@ module Chess
   end
 end
 
-game =  Chess::Game.new
-game.run
+#game =  Chess::Game.new
+#game.run

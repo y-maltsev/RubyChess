@@ -12,9 +12,9 @@ module Chess
 	  moves+= move(source, [-1,-2],color,board)
 	end
 	
-	def self.move(source,offset, color,  board)
+	def self.move(source, offset, color,  board)
 	   moves = []
-	   x, y = source[0]+offset[0], source[1]+offset[1]
+	   x, y = source[0] + offset[0], source[1] + offset[1]
 	   moves << [x,y] if((1..8)===x && (1..8)===y && (board[[x,y]] == nil || board[[x,y]][0] != color))
 	   moves
 	end

@@ -21,7 +21,3 @@ module Chess
   end
 end
 
-
-board = Hash.new(nil)
-board[[2,7]] = "Bk"
-Chess::Rook.get_move_positions([2,7],"W",board)
