@@ -44,7 +44,6 @@ module Chess
 	  end
 	  @King_piece = "K"
 	  @King_piece = "k" if(@rule_type == 4)
-	  puts @King_piece
 	end
 	
     def reset_board
@@ -179,7 +178,6 @@ module Chess
 	end
 	
 	def handle_event(selector)
-	  
 	  unless @rule_type == 2 && @turn_time <0 
         if(@board[selector] !=nil && board[selector][0]==@turnColor)
           @selected = selector
