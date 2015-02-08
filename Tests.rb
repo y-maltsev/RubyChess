@@ -174,8 +174,6 @@ describe "Tests" do
 	  expect(testboard.selected).to eq nil
 	  expect(testboard.winner).to eq "W"
 	  expect(testboard.turnColor).to eq "B"
-	  
-	  
 	end
  end
   

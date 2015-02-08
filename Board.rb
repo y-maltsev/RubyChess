@@ -160,14 +160,13 @@ module Chess
   public
     def initialize(type)
 	  @rule_type = type
-      @board = Hash.new
-      #init_game_type
+      @board = {}
       init_board
-      #init_2D if @render_type == 2
       selected = nil
       possible_moves = nil
 	  winner = nil
     end
+	
     def update
 	   handle_time if( rule_type == 2 || rule_type == 3)
 	end
@@ -193,7 +192,8 @@ module Chess
 		    modify_pawn(selector) if(board[selector][1]== "P" || board[selector][1] == "p")	
 		    @selected = nil
             @possible_moves = []
-		    @turnColor= @turnColor == "W" ? "B": "W"
+		    @turnColor = @turnColor == "W" ? "B": "W"
+			@turn_time = 30 if  @rule_type == 2
 		    if(chess_check( turnColor, @King_piece) && chessmate_check(turnColor, @King_piece, selector)) 
 		      @winner = @turnColor == "W" ? "B": "W"
 		    end

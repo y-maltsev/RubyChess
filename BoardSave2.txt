@@ -1,9 +1,0 @@
-1
-Br  Bk  Bb  BQ  BK  Bb  Bk  Br
-BP  BP  BP  BP  BP  BP  BP  BP
-n   n   n   n   n   n   n   n 
-n   n   n   n   n   n   n   n 
-n   n   n   n   n   n   n   n 
-n   n   n   n   n   n   n   n 
-WP  WP  WP  WP  WP  WP  WP  WP
-Wr  Wk  WB  WQ  WK  WB  Wk  Wr
